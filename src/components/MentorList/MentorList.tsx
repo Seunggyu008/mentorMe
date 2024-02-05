@@ -15,7 +15,7 @@ interface MentorListProps {
 }
 
 const MentorList: React.FC<MentorListProps> = ({ selected }) => {
-  //const [selectedMentors, setSelectedMentors] = useState<Mentor[]>([]);
+  const [selectedMentors, setSelectedMentors] = useState<Mentor[]>([]);
   const mentorList: Mentor[] = [
     {
       mentorId: 0,
@@ -40,8 +40,14 @@ const MentorList: React.FC<MentorListProps> = ({ selected }) => {
     },
   ];
 
-  const handleToggleSelect = () => {
-    console.log('BP!!!');
+  const handleToggleSelect = (mentorId: number) => {
+    setSelectedMentors((prevMentors) =>
+      prevMentors.map((mentor) =>
+        mentor.mentorId === mentorId
+          ? { ...mentor, mentorState: !mentor.mentorState }
+          : mentor,
+      ),
+    );
   };
 
   const mentorListRender = mentorList.map((mentor) => (
@@ -50,7 +56,9 @@ const MentorList: React.FC<MentorListProps> = ({ selected }) => {
       <p>Name: {mentor.name}</p>
       <p>Age: {mentor.age}</p>
       <p>Specialty: {mentor.speciality}</p>
-      <button onClick={handleToggleSelect}>Select</button>
+      <button onClick={() => handleToggleSelect(mentor.mentorId)}>
+        {mentor.mentorState ? 'Deselect' : 'Select'}
+      </button>
     </StyledList>
   ));
 
